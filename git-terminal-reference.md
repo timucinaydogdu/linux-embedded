@@ -1,365 +1,201 @@
-
 # Git & Terminal Reference
 
-Personal quick-reference for Git workflows and terminal commands.
-Part of the [linux-embedded](.) foundation layer.
+Git workflow, terminal komutları ve Python ortamı için hızlı başvuru kılavuzu.
 
 ---
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Terminalicon2.png"  height="120" width="120">
+## İçindekiler
 
+- [1. Git Komutları](#1-git-komutları)
+  - [Temel İşlemler](#temel-işlemler)
+  - [Branch ve Merge](#branch-ve-merge)
+  - [Geçmiş ve Geri Alma](#geçmiş-ve-geri-alma)
+  - [Remote İşlemleri](#remote-işlemleri)
+  - [Stash](#stash)
+  - [Tag](#tag)
+- [2. Terminal Komutları](#2-terminal-komutları)
+  - [Navigasyon](#navigasyon)
+  - [Dosya İşlemleri](#dosya-işlemleri)
+  - [İçerik ve Arama](#içerik-ve-arama)
+  - [İzin ve Sahiplik](#izin-ve-sahiplik)
+  - [Sistem](#sistem)
+- [3. Python Ortamı](#3-python-ortamı)
+  - [pyenv](#pyenv)
+  - [Virtual Environment](#virtual-environment)
+  - [direnv](#direnv)
 
+---
 
-### Temel Git Komutları
+## 1. Git Komutları
 
+### Temel İşlemler
 
-1. **git init**: Yeni bir Git deposu oluşturur.
-   ```sh
-   git init
-   ```
-
-2. **git clone**: Var olan bir depoyu klonlar.
-   ```sh
-   git clone https://github.com/username/repository.git
-   ```
-
-3. **git add**: Değişiklikleri ekler.
-   ```sh
-   git add .
-   ```
-
-4. **git commit**: Değişiklikleri commit eder.
-   ```sh
-   git commit -m "Commit mesajı"
-   ```
-
-5. **git status**: Depo durumunu kontrol eder.
-   
-   ```sh
-   git status
-   ```
-   
-6. **git push**: Değişiklikleri uzak depoya gönderir.
-   
-   ```sh
-   git push origin main
-   ```
-   
-7. **git pull**: Uzak depodan değişiklikleri alır.
-   ```sh
-   git pull origin main
-   ```
-
-### İleri Seviye Git Komutları
-
-#### Dallar (Branches) ve Çatallaşma (Branching)
-
-1. **git branch**: Yeni bir dal oluşturur veya dalları listeler.
-   ```sh
-   git branch # Mevcut dalları listeler
-   git branch feature-branch # Yeni bir dal oluşturur
-   ```
-
-2. **git checkout**: Dalları değiştirir veya dalları oluşturup değiştirir.
-   ```sh
-   git checkout feature-branch # Mevcut bir dala geçer
-   git checkout -b new-feature-branch # Yeni bir dal oluşturur ve ona geçer
-   ```
-
-3. **git merge**: Bir dalı başka bir dal ile birleştirir.
-   ```sh
-   git checkout main # Hedef dala geçer
-   git merge feature-branch # Feature dalını main ile birleştirir
-   ```
-
-4. **git rebase**: Bir dalın tabanını başka bir dalın sonuna taşıyarak yeniden uygulama yapar.
-   ```sh
-   git checkout feature-branch
-   git rebase main # main dalındaki değişiklikleri feature-branch'a uygular
-   ```
-
-#### İptal Etme ve Geri Alma (Undoing)
-
-1. **git reset**: Commit geçmişini değiştirir ve değişiklikleri geri alır.
-   ```sh
-   git reset --soft HEAD~1 # Son commit'i geri alır, değişiklikler saklanır
-   git reset --hard HEAD~1 # Son commit'i geri alır ve değişiklikleri kaybeder
-   ```
-
-2. **git revert**: Belirli bir commit'i geri alır, yeni bir commit olarak kaydeder.
-   ```sh
-   git revert <commit_hash> # Belirtilen commit'i geri alır
-   ```
-
-#### İnteraktif Rebase (Interactive Rebase)
-
-1. **git rebase -i**: Commit geçmişini düzenlemek için interaktif rebase yapar.
-   ```sh
-   git rebase -i HEAD~3 # Son üç commit'i düzenler
-   ```
-
-#### Etiketler (Tags)
-
-1. **git tag**: Belirli bir commit'e etiket ekler.
-   ```sh
-   git tag v1.0 # HEAD commit'e v1.0 etiketi ekler
-   git tag v1.0 <commit_hash> # Belirtilen commit'e etiket ekler
-   ```
-
-2. **git push --tags**: Etiketleri uzak depoya gönderir.
-   ```sh
-   git push --tags
-   ```
-
-#### Git Stash
-
-1. **git stash**: Geçici olarak değişiklikleri saklar.
-   ```sh
-   git stash # Geçerli değişiklikleri saklar
-   git stash pop # Saklanan değişiklikleri geri getirir
-   ```
-
-#### Git Log
-
-1. **git log**: Commit geçmişini görüntüler.
-   ```sh
-   git log # Tüm commit geçmişini gösterir
-   git log --oneline # Her commit'i tek satırda gösterir
-   ```
-
-2. **git log --graph --decorate --oneline**: Dal geçmişini ve commit'leri grafik olarak gösterir.
-   ```sh
-   git log --graph --decorate --oneline
-   ```
-
-### Çakışmalar ve Çözümleme (Conflicts and Resolution)
-
-1. **git merge-conflict**: Çakışmalar olduğunda, dosyalar çakışma işaretleri içerir. Çakışmaları manuel olarak çözmeniz gerekir.
-
-2. **git add ve git commit**: Çakışmalar çözüldüğünde değişiklikleri ekleyin ve commit edin.
-   ```sh
-   git add .
-   git commit -m "Çakışma çözüldü"
-   ```
-
-### Uzak Depolar (Remote Repositories)
-
-1. **git remote**: Uzak depoları yönetir.
-   ```sh
-   git remote -v # Uzak depoları listeler
-   git remote add origin https://github.com/username/repository.git # Uzak depo ekler
-   ```
-
-2. **git fetch**: Uzak depodan değişiklikleri alır (ancak çalışma dizinine uygulamaz).
-   ```sh
-   git fetch origin
-   ```
-
-### Fork ve Pull Request
-
-1. **Fork**: GitHub'da bir projeyi fork edin (klonlayın).
-2. **Pull Request**: Değişikliklerinizi orijinal depo sahibine geri gönderin. GitHub arayüzü üzerinden yapılır.
-
-<br>
-
-# Temel Terminal Komutları 
-
-
-
-### 1. `ls`
-**Açıklama:** Klasör içeriğini listelemek için kullanılır.
-
-**Kullanım:**
 ```sh
-ls            # Mevcut dizindeki dosyaları ve klasörleri listeler
-ls -l         # Ayrıntılı listeleme
-ls -a         # Gizli dosyaları da listeler
-ls -la        # Ayrıntılı ve gizli dosyaları listeleme
+git init                        # Yeni repo başlat
+git clone <url>                 # Repoyu klonla
+git status                      # Değişiklikleri göster
+git add <dosya>                 # Dosyayı stage'e ekle
+git add .                       # Tüm değişiklikleri ekle
+git commit -m "mesaj"           # Commit oluştur
+git push                        # Remote'a gönder
+git pull                        # Remote'dan çek
 ```
 
-### 2. `cd`
-**Açıklama:** Dizin değiştirmek için kullanılır.
+### Branch ve Merge
 
-**Kullanım:**
 ```sh
-cd /path/to/directory  # Belirtilen dizine gider
-cd ~                   # Ana dizine gider
-cd ..                  # Üst dizine gider
-cd -                   # Önceki dizine gider
+git branch                      # Branch listesi
+git branch <isim>               # Yeni branch oluştur
+git checkout <isim>             # Branch'e geç
+git checkout -b <isim>          # Oluştur ve geç
+git merge <isim>                # Branch'i birleştir
+git rebase <isim>               # Branch'i rebase et
+git rebase -i HEAD~3            # Son 3 commit'i düzenle
+git branch -d <isim>            # Branch sil
 ```
 
-### 3. `pwd`
-**Açıklama:** Geçerli çalışma dizinini yazdırır.
+### Geçmiş ve Geri Alma
 
-**Kullanım:**
 ```sh
-pwd  # Mevcut çalışma dizinini gösterir
+git log                         # Commit geçmişi
+git log --oneline               # Kısa geçmiş
+git diff                        # Değişiklikleri karşılaştır
+git reset HEAD~1                # Son commit'i geri al (dosyalar kalır)
+git reset --hard HEAD~1         # Son commit'i tamamen sil
+git revert <commit-id>          # Commit'i geri döndür (güvenli)
 ```
 
-### 4. `mkdir`
-**Açıklama:** Yeni bir dizin oluşturur.
+### Remote İşlemleri
 
-**Kullanım:**
 ```sh
-mkdir new_directory  # "new_directory" adında yeni bir dizin oluşturur
+git remote -v                   # Remote listesi
+git remote add origin <url>     # Remote ekle
+git remote set-url origin <url> # Remote URL güncelle
+git fetch                       # Remote değişiklikleri indir
+git push -u origin main         # İlk push
 ```
 
-### 5. `rmdir`
-**Açıklama:** Boş bir dizini siler.
+### Stash
 
-**Kullanım:**
 ```sh
-rmdir directory_name  # "directory_name" adlı boş dizini siler
+git stash                       # Değişiklikleri geçici sakla
+git stash list                  # Stash listesi
+git stash pop                   # Son stash'i geri getir
+git stash drop                  # Son stash'i sil
 ```
 
-### 6. `rm`
-**Açıklama:** Dosyaları veya dizinleri siler.
+### Tag
 
-**Kullanım:**
 ```sh
-rm file_name         # "file_name" adlı dosyayı siler
-rm -r directory_name # "directory_name" adlı dizini ve içeriğini siler
+git tag                         # Tag listesi
+git tag v1.0.0                  # Tag oluştur
+git push origin v1.0.0          # Tag'i gönder
 ```
 
-### 7. `cp`
-**Açıklama:** Dosya veya dizinleri kopyalar.
+---
 
-**Kullanım:**
+## 2. Terminal Komutları
+
+### Navigasyon
+
 ```sh
-cp source_file destination_file             # "source_file" adlı dosyayı "destination_file" olarak kopyalar
-cp -r source_directory destination_directory # "source_directory" adlı dizini "destination_directory" olarak kopyalar
+pwd                             # Bulunduğun dizini göster
+ls                              # Dosyaları listele
+ls -la                          # Gizli dosyalarla listele
+cd <dizin>                      # Dizine geç
+cd ..                           # Üst dizine geç
+cd ~                            # Home dizinine geç
 ```
 
-### 8. `mv`
-**Açıklama:** Dosya veya dizinleri taşır veya yeniden adlandırır.
+### Dosya İşlemleri
 
-**Kullanım:**
 ```sh
-mv old_name new_name          # "old_name" adlı dosya/dizini "new_name" olarak yeniden adlandırır
-mv file_name /path/to/directory # "file_name" adlı dosyayı belirtilen dizine taşır
+touch <dosya>                   # Boş dosya oluştur
+mkdir <dizin>                   # Klasör oluştur
+mkdir -p a/b/c                  # İç içe klasör oluştur
+cp <kaynak> <hedef>             # Kopyala
+mv <kaynak> <hedef>             # Taşı veya yeniden adlandır
+rm <dosya>                      # Dosya sil
+rm -rf <dizin>                  # Klasörü sil (dikkatli kullan)
 ```
 
-### 9. `touch`
-**Açıklama:** Yeni boş bir dosya oluşturur veya mevcut bir dosyanın zaman damgasını günceller.
+### İçerik ve Arama
 
-**Kullanım:**
 ```sh
-touch file_name  # "file_name" adlı yeni boş bir dosya oluşturur
+cat <dosya>                     # Dosya içeriğini göster
+nano <dosya>                    # Nano editörde aç
+vim <dosya>                     # Vim editörde aç
+grep "kelime" <dosya>           # Dosyada ara
+grep -r "kelime" .              # Tüm dizinde ara
+find . -name "*.py"             # Dosya bul
 ```
 
-### 10. `cat`
-**Açıklama:** Dosyanın içeriğini terminalde görüntüler.
+### İzin ve Sahiplik
 
-**Kullanım:**
 ```sh
-cat file_name  # "file_name" adlı dosyanın içeriğini gösterir
+chmod 755 <dosya>               # İzin değiştir
+chown user:group <dosya>        # Sahip değiştir
 ```
 
-### 11. `nano`
-**Açıklama:** Basit bir metin editörüdür.
+### Sistem
 
-**Kullanım:**
 ```sh
-nano file_name  # "file_name" adlı dosyayı nano ile düzenlemek için açar
+df -h                           # Disk kullanımı
+du -sh <dizin>                  # Dizin boyutu
+echo "metin"                    # Metin yazdır
+sudo <komut>                    # Yönetici olarak çalıştır
 ```
 
-### 12. `vi` veya `vim`
-**Açıklama:** Gelişmiş bir metin editörüdür.
+---
 
-**Kullanım:**
+## 3. Python Ortamı
+
+### pyenv
+
 ```sh
-vi file_name   # "file_name" adlı dosyayı vi ile düzenlemek için açar
-vim file_name  # "file_name" adlı dosyayı vim ile düzenlemek için açar
+brew install pyenv              # Kur
+pyenv install 3.12.2            # Versiyon indir
+pyenv global 3.12.2             # Global versiyon belirle
+pyenv local 3.12.2              # Proje versiyonu belirle
+pyenv versions                  # Kurulu versiyonlar
 ```
 
-### 13. `grep`
-**Açıklama:** Dosya içeriğinde belirli bir metin dizisini arar.
+~/.zshrc dosyasına ekle:
 
-**Kullanım:**
 ```sh
-grep "search_term" file_name  # "file_name" adlı dosyada "search_term" metnini arar
-grep -r "search_term" directory_name # "directory_name" adlı dizinde "search_term" metnini arar
+eval "$(pyenv init -)"
 ```
 
-### 14. `find`
-**Açıklama:** Dosya ve dizinleri arar.
+### Virtual Environment
 
-**Kullanım:**
 ```sh
-find /path/to/search -name "file_name"  # Belirtilen dizinde "file_name" adlı dosyayı arar
+python -m venv .venv            # Sanal ortam oluştur
+source .venv/bin/activate       # Aktive et
+deactivate                      # Deaktive et
+pip install <paket>             # Paket yükle
+pip freeze > requirements.txt   # Bağımlılıkları kaydet
+pip install -r requirements.txt # Bağımlılıkları yükle
 ```
 
-### 15. `chmod`
-**Açıklama:** Dosya veya dizin izinlerini değiştirir.
+### direnv
 
-**Kullanım:**
+Klasöre girildiğinde .venv otomatik aktive olur.
+
 ```sh
-chmod 755 file_name  # "file_name" adlı dosyanın izinlerini değiştirir
+brew install direnv             # Kur
 ```
 
-### 16. `chown`
-**Açıklama:** Dosya veya dizin sahibini değiştirir.
+~/.zshrc dosyasına ekle:
 
-**Kullanım:**
 ```sh
-chown user:group file_name  # "file_name" adlı dosyanın sahibi ve grubunu değiştirir
+eval "$(direnv hook zsh)"
 ```
 
-### 17. `echo`
-**Açıklama:** Terminalde bir metni veya değişkenin değerini yazdırır.
+Projede kullan:
 
-**Kullanım:**
 ```sh
-echo "Hello, World!"  # Terminalde "Hello, World!" yazdırır
-echo $PATH            # PATH çevresel değişkeninin değerini yazdırır
+echo "source .venv/bin/activate" > .envrc
+direnv allow
 ```
 
-### 18. `sudo`
-**Açıklama:** Yönetici (root) yetkileriyle bir komutu çalıştırır.
-
-**Kullanım:**
-```sh
-sudo command  # Belirtilen komutu yönetici yetkileriyle çalıştırır
-```
-
-### 19. `df`
-**Açıklama:** Disk alanı kullanımını gösterir.
-
-**Kullanım:**
-```sh
-df -h  # İnsan tarafından okunabilir biçimde disk kullanımını gösterir
-```
-
-### 20. `du`
-**Açıklama:** Dosya ve dizinlerin disk kullanımını gösterir.
-
-**Kullanım:**
-```sh
-du -h /path/to/directory  # Belirtilen dizinin disk kullanımını insan tarafından okunabilir biçimde gösterir
-```
-
-**Yeni calisma ortami eklenmesi:**
-```sh
-pyeny local 3.12.2  # Python projesine ozel python versiyonu tanimlamaya yarar. 
-
-python -m verv .verv # Python projesine bagimliliklarindan kurtarir. 
-
-source .verv/bin/activate # Verv yapisini aktif eder. 
-
-pip install --upgrade pip # pip upgradelerini yapar. 
-
-pip install requests flask # Flask bagimliliklarini alir. 
-
-pip freeze > requirements.txt # Versiyonlar bagliliklarini dosyaya yazar. 
-
-brew install direnv # Klasore girince verv i otomatik aktif edecek program. 
-
-echo 'eval "(direnv hook zsh)"' >> ~/.zshrc # terminale baglantisini saglar. 
-
-source ~/,zshrc # terminali resetler
-
-cat .envrc # Cagirilacak dosya
-echo 'source .venv/bin/activate' > .envrc # Aktif etme komutu. 
-
-direnv allow # Izinleri verir
-
+> Detaylı kullanım için: [notes/direnv-guide.md](./notes/direnv-guide.md)
